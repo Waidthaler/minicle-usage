@@ -1,0 +1,27 @@
+{
+  "name": "minicle-usage",
+  "version": "0.0.1",
+  "description": "https://github.com/Waidthaler/minicle-usage.git",
+  "main": "index.js",
+  "dependencies": {
+    "ansi-colors": "^3.2.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Waidthaler/minicle-usage.git"
+  },
+  "keywords": [
+    "minicle",
+    "usage"
+  ],
+  "author": "Erich Waidthaler",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Waidthaler/minicle-usage/issues"
+  },
+  "homepage": "https://github.com/Waidthaler/minicle-usage#readme"
+}
