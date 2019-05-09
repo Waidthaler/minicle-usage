@@ -98,7 +98,14 @@ function usage(optionMap, options) {
 
     if(options.subcommands) {
         for(var cmd in optionMap) {
-            var separator = " cmd: " + cmd + " ";
+            if(cmd == "@all")
+                var separator = " (all commands) ";
+            else if(cmd == "@none")
+                var separator = " (no command) ";
+            else if(cmd == "@general" || cmd == "@subcommand")
+                continue;
+            else
+                var separator = " cmd: " + cmd + " ";
             separator += options.lineChar.repeat(options.width - separator.length);
             content.push(ac.green.bold("\n" + separator + "\n"));
             for(var longOpt in optionMap[cmd]) {

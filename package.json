@@ -1,7 +1,7 @@
 {
   "name": "minicle-usage",
   "version": "0.0.1",
-  "description": "https://github.com/Waidthaler/minicle-usage.git",
+  "description": "An add-on for Minicle that generates headers and usage information, optionally with ANSI coloring.",
   "main": "index.js",
   "dependencies": {
     "ansi-colors": "^3.2.4"
