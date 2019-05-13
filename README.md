@@ -1,7 +1,9 @@
-# minicle-usage 0.0.1
+# minicle-usage 1.0.0
 
 **An add-on for [minicle](https://www.npmjs.com/package/minicle) that generates 
 headers and usage information, optionally with ANSI coloring.**
+
+**NEW in 1.0.0: Custom ANSI colors and box-drawing characters!**
 
 Minicle is a deliberately simple module in the spirit of Unix tool philosophy: 
 do one thing and do it well. For that reason, and because things like headers
@@ -18,6 +20,7 @@ can also produce a generic runtime header.
 * [Basic Usage](#basic-usage)
 * [usage()](#usage)
 * [header()](#header)
+* [Custom Colors](#custom)
 * [License](#license)
 * [Todo](#todo)
 * [Changelog](#changelog)
@@ -102,6 +105,7 @@ usage(optionMap, options)
 
 The `options` argument may contain the following attributes:
 
+* **`customColors`:** An object containing custom ANSI color callbacks. [See below.](#custom)
 * **`exit`:** If true, exit the program after output. Defaults to `true`.
 * **`lineChar`:** Separator between commands, defaults to `"-"`
 * **`subcommands`:** Defaults `false`, must be `true` if minicle is using git-style subcommands.
@@ -121,9 +125,32 @@ header(content, options)
 The `content` argument is the text in the box. The `options` argument may contain
 the following attributes:
 
-* **`lineChar`:** A single character used for the borders. Defaults to `"="`.
+* **`customColors`:** An object containing custom ANSI color callbacks. [See below.](#custom)
+* **`lineChar`:** By default, this is a single character, `"="` to use for drawing the box. If eight characters are supplied, they are used for the eight directions, starting from the upper left and proceeding clockwise. Alternatively, `"ascii"`, `"pcdos1"`, and `"pcdos2"` are shortcuts for a few common variations.
 * **`useColors`:** A boolean indicating whether to use ANSI colors. Defaults to `true`.
 * **`width`:** The width of the header in characters. Defaults to 76.
+
+<a name="custom"></a>
+## Custom Colors
+
+Custom colors are supplied using the mysteriously named `customColors` option. 
+This consists of an object containing callbacks to wrap strings in ANSI color 
+codes, such as the functions in `ansi-colors` or `chalk`. There are five callbacks
+required: `usage`, `switches`, `args`, `desc`, and `cmd`.
+
+If you're using `ansi-colors`, assigned to `const ac`, this is what the 
+`customColors` option would look like if you perversely insisted on duplicating 
+the defaults:
+
+```javascript
+customColors: {
+    usage:    ac.white.bold,
+    switches: ac.yellow.bold,
+    args:     ac.blue.bold,
+    desc:     ac.cyan.bold,
+    cmd:      ac.green.bold,
+}
+```
 
 <a name="license"></a>
 ## License
@@ -158,5 +185,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <a name="changelog"></a>
 ## Changelog
+
+1.0.0: Added optional custom colors and box-drawing characters.
 
 0.0.1: Initial release.

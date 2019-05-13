@@ -5,7 +5,16 @@ const ac = require("ansi-colors");
 // ostentatious and ridiculous as time goes by. The options object may contain:
 //
 //     lineChar .... A single character used for the borders. Defaults to "=".
+//                   Alternatively, this can be a string of eight characters, one
+//                   for each corner and side, starting with the upper left
+//                   corner and proceeding clockwise.
+//
+//     customColors ... An object containing { border: x, title: y }, where x
+//                      and y are functions that wrap strings in ANSI color
+//                      codes, e.g. ansiColors.blue.bold or chalk.blue.bold
+//
 //     width ....... The width of the header in characters. Defaults to 76.
+//
 //     useColors ... A boolean indicating whether to use ANSI colors. Defaults
 //                   to true.
 //==============================================================================
@@ -16,19 +25,38 @@ function header(content, options) {
         options = { };
 
     if(options.lineChar === undefined)
-        options.lineChar = "=";
+        options.lineChar = "========";
+    else if(options.lineChar === "ascii")
+        options.lineChar = "+-+|+-+|";
+    else if(options.lineChar === "pcdos1")
+        options.lineChar = "┌─┐│┘─└│";
+    else if(options.lineChar === "pcdos2")
+        options.lineChar = "╔═╗║╝═╚║";
+    else if(options.lineChar.length == 1)
+        options.lineChar = options.lineChar.repeat(8);
+
     if(options.width === undefined)
         options.width = 76;
     if(options.useColors === undefined)
         options.useColors = true;
 
-    var line    = options.lineChar.repeat(options.width);
-    var title   = " ".repeat(Math.round(((options.width - 2) / 2) - (content.length / 2))) + content;
-    title += " ".repeat(options.width - 4 - title.length);
+    if(options.customColors === undefined) {
+        options.customColors = {
+            border: ac.blue.bold,
+            title:  ac.yellow.bold
+        };
+    }
+    if(options.customColors.border === undefined)
+        options.customColors.border = ac.blue.bold;
+    if(options.customColors.title === undefined)
+        options.customColors.title = ac.yellow.bold;
 
-    var header = "\n" + ac.blue(line) + "\n"
-        + ac.blue(options.lineChar + " ") + ac.yellow.bold(title) + ac.blue(" " + options.lineChar) + "\n"
-        + ac.blue(line) + "\n";
+    var pad = ((options.width - 2) / 2) - (content.length / 2);
+
+    var header = "\n" + options.customColors.border(options.lineChar[0] + options.lineChar[1].repeat(options.width - 2) + options.lineChar[2]) + "\n"
+        + options.customColors.border(options.lineChar[7]) + " ".repeat(Math.floor(pad)) + options.customColors.title(content)
+        +  " ".repeat(Math.ceil(pad)) + options.customColors.border(options.lineChar[3]) + "\n"
+        + options.customColors.border(options.lineChar[6] + options.lineChar[5].repeat(options.width - 2) + options.lineChar[4]);
 
     if(!options.useColors)
         header = ac.unstyle(header);
@@ -42,14 +70,16 @@ function header(content, options) {
 // Outputs usage instructions. Takes an extended minicle optionMap (see README)
 // and an options object. The options object may contain:
 //
-//     exit .......... If true, exit the program after output. Defaults to true.
-//     subcommands ... Defaults false, must be true if the option map includes
-//                     git-style subcommands.
-//     usageText ..... Whatever text should follow "Usage: ".
-//     width ......... Maximum width of output, defaults to 76. Note that this
-//                     is advisory: content does not wrap.
-//     useColors ..... Whether to use ANSI colors. Defaults to true.
-//     lineChar ...... Separator between commands, defaults to "-"
+//     exit ........... If true, exit the program after output. Defaults to true.
+//     subcommands .... Defaults false, must be true if the option map includes
+//                      git-style subcommands.
+//     usageText ...... Whatever text should follow "Usage: ".
+//     width .......... Maximum width of output, defaults to 76. Note that this
+//                      is advisory: content does not wrap.
+//     customColors ... As with header, an object specifying a set of ANSIfying
+//                      functions: { usage, switches, args, desc, cmd }
+//     useColors ...... Whether to use ANSI colors. Defaults to true.
+//     lineChar ....... Separator between commands, defaults to "-"
 //
 //
 //==============================================================================
@@ -71,6 +101,15 @@ function usage(optionMap, options) {
         options.useColors = true;
     if(options.lineChar === undefined)
         options.lineChar = "-";
+
+    if(options.customColors === undefined)
+        options.customColors = {
+            usage:    ac.white.bold,
+            switches: ac.yellow.bold,
+            args:     ac.blue.bold,
+            desc:     ac.cyan.bold,
+            cmd:      ac.green.bold,
+        };
 
 
     var content = [ ];
@@ -107,15 +146,15 @@ function usage(optionMap, options) {
             else
                 var separator = " cmd: " + cmd + " ";
             separator += options.lineChar.repeat(options.width - separator.length);
-            content.push(ac.green.bold("\n" + separator + "\n"));
+            content.push(options.customColors.cmd("\n" + separator + "\n"));
             for(var longOpt in optionMap[cmd]) {
-                content.push(formatOption(longOpt, optionMap[cmd][longOpt], max, pad));
+                content.push(formatOption(longOpt, optionMap[cmd][longOpt], max, pad, options.customColors));
             }
         }
     } else {
         content.push("");
         for(var longOpt in optionMap) {
-            content.push(formatOption(longOpt, optionMap[longOpt], max, pad));
+            content.push(formatOption(longOpt, optionMap[longOpt], max, pad, options.customColors));
         }
     }
 
@@ -130,18 +169,18 @@ function usage(optionMap, options) {
 
 
 //------------------------------------------------------------------------------
-// Takes a long option, its corresponding optionMap value, the max object, and a
-// pad value, and returns a formatted version.
+// Takes a long option, its corresponding optionMap value, the max object, a pad
+// value, and options.customColors, and returns a formatted version.
 //------------------------------------------------------------------------------
 
-function formatOption(longOpt, map, max, pad) {
+function formatOption(longOpt, map, max, pad, color) {
     longOpt += " ".repeat((max.long - longOpt.length) + pad);
     var args = map.args === undefined ? "" : map.args;
     args +=  " ".repeat((max.args - args.length) + pad);
     var desc = map.desc === undefined ? "" : map.desc;
 
-    return ac.yellow.bold("    -" + map.short + ", --" + longOpt)
-        + ac.blue.bold(args) + ac.cyan.bold(desc);
+    return color.switches("    -" + map.short + ", --" + longOpt)
+        + color.args(args) + color.desc(desc);
 }
 
 
