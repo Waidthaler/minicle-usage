@@ -189,17 +189,13 @@ function formatOption(longOpt, map, max, pad, color) {
     args +=  " ".repeat((max.args - args.length) + pad);
     var desc = map.desc === undefined ? "" : map.desc;
 
-<<<<<<< HEAD
     if(map.short === undefined)
         return ac.yellow.bold("    --" + longOpt + "    ")
             + ac.blue.bold(args) + ac.cyan.bold(desc);
     else
         return ac.yellow.bold("    -" + map.short + ", --" + longOpt)
             + ac.blue.bold(args) + ac.cyan.bold(desc);
-=======
-    return color.switches("    -" + map.short + ", --" + longOpt)
-        + color.args(args) + color.desc(desc);
->>>>>>> 803c8a08dfc1432d565d220502694708bf0edc79
+
 }
 
 

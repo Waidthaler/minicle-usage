@@ -1,4 +1,4 @@
-# minicle-usage 1.0.2
+# minicle-usage 1.0.3
 
 **An add-on for [minicle](https://www.npmjs.com/package/minicle) that generates 
 headers and usage information, optionally with ANSI coloring.**
@@ -184,9 +184,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <a name="changelog"></a>
 ## Changelog
 
-1.0.2: Shut up.
-
-1.0.1: Minor bugfixes
+1.0.3: Minor bugfixes
 
 * Fixed case with non-existent short option.
 * Suppressed output of options beginning with `@` (these are generated at runtime by minicle).
