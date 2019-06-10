@@ -1,6 +1,6 @@
 {
   "name": "minicle-usage",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An add-on for Minicle that generates headers and usage information, optionally with ANSI coloring.",
   "main": "index.js",
   "dependencies": {

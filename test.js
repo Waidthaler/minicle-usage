@@ -33,14 +33,17 @@ var optionMap = {
 
 mu = require("./index.js");
 
+mu.usage(optionMap.chain, { usageText: "someprog <cmd> [options]", exit: false });
+mu.usage(optionMap, { usageText: "someprog <cmd> [options]", subcommands: true, exit: false });
+mu.usage(optionMap, { usageText: "someprog <cmd> [options]", subcommands: true, exit: false, useColors: false });
+
 mu.header("Default! Version 1.0!");
 mu.header("Without colors!", { useColors: false });
 mu.header("Wide screen!", { width: 120 });
 mu.header("Hashes!", { lineChar: "#" });
 mu.header("B/W Hashes!", { lineChar: "#", useColors: false });
-
-mu.usage(optionMap.chain, { usageText: "someprog <cmd> [options]", exit: false });
-mu.usage(optionMap, { usageText: "someprog <cmd> [options]", subcommands: true, exit: false });
-mu.usage(optionMap, { usageText: "someprog <cmd> [options]", subcommands: true, exit: false, useColors: false });
-
+mu.header("Custom boxes!", { lineChar: "+-+|+-+|" });
+mu.header("Custom boxes!!", { lineChar: "+-+|+-+|" });
+mu.header("Custom boxes!!", { lineChar: "pcdos1" });
+mu.header("Custom boxes!!", { lineChar: "pcdos2" });
 
