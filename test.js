@@ -2,10 +2,12 @@
 
 var optionMap = {
     chain: {
-        "infile":   { short: "i", vals: [ ],         args: "<filename(s)>", desc: "Path to input chain file(s)."  },
-        "count":    { short: "c", vals: [ ], max: 1, args: "<number>",      desc: "Number of chains to generate." },
-        "start":    { short: "s", vals: [ ], max: 1, args: "<string>",      desc: "Start tag for chain."          },
-        "max-size": { short: "m", vals: [ ], max: 1, args: "<number>",      desc: "Maximum links per chain."      },
+        "infile":    { short: "i", vals: [ ],         args: "<filename(s)>", desc: "Path to input chain file(s)."  },
+        "count":     { short: "c", vals: [ ], max: 1, args: "<number>",      desc: "Number of chains to generate." },
+        "start":     { short: "s", vals: [ ], max: 1, args: "<string>",      desc: "Start tag for chain."          },
+        "max-size":  { short: "m", vals: [ ], max: 1, args: "<number>",      desc: "Maximum links per chain."      },
+        "shortless": { vals: [ ], args: "<string>", desc: "Test for missing short option" },
+        "@general":  { vals: [ ] },
     },
     grammar: {
         "grammar":  { short: "g", vals: [ ],         args: "<filename(s)>", desc: "Path to grammar file(s)."      },

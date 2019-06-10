@@ -61,8 +61,14 @@ function usage(optionMap, options) {
 
     if(options.exit === undefined)
         options.exit = true;
+
+    if(options.subcommand !== undefined)
+        options.subcommands = options.subcommand;
+
     if(options.subcommands === undefined)
         options.subcommands = false;
+
+
     if(options.usageText === undefined)
         options.usageText = "YOU FORGOT TO SPECIFY options.usageText!";
     if(options.width === undefined)
@@ -109,12 +115,16 @@ function usage(optionMap, options) {
             separator += options.lineChar.repeat(options.width - separator.length);
             content.push(ac.green.bold("\n" + separator + "\n"));
             for(var longOpt in optionMap[cmd]) {
+                if(longOpt.substr(0, 1) == "@")
+                    continue;
                 content.push(formatOption(longOpt, optionMap[cmd][longOpt], max, pad));
             }
         }
     } else {
         content.push("");
         for(var longOpt in optionMap) {
+            if(longOpt.substr(0, 1) == "@")
+                continue;
             content.push(formatOption(longOpt, optionMap[longOpt], max, pad));
         }
     }
@@ -140,8 +150,12 @@ function formatOption(longOpt, map, max, pad) {
     args +=  " ".repeat((max.args - args.length) + pad);
     var desc = map.desc === undefined ? "" : map.desc;
 
-    return ac.yellow.bold("    -" + map.short + ", --" + longOpt)
-        + ac.blue.bold(args) + ac.cyan.bold(desc);
+    if(map.short === undefined)
+        return ac.yellow.bold("    --" + longOpt + "    ")
+            + ac.blue.bold(args) + ac.cyan.bold(desc);
+    else
+        return ac.yellow.bold("    -" + map.short + ", --" + longOpt)
+            + ac.blue.bold(args) + ac.cyan.bold(desc);
 }
 
 

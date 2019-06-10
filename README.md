@@ -1,4 +1,4 @@
-# minicle-usage 0.0.1
+# minicle-usage 1.0.0
 
 **An add-on for [minicle](https://www.npmjs.com/package/minicle) that generates 
 headers and usage information, optionally with ANSI coloring.**
@@ -104,7 +104,7 @@ The `options` argument may contain the following attributes:
 
 * **`exit`:** If true, exit the program after output. Defaults to `true`.
 * **`lineChar`:** Separator between commands, defaults to `"-"`
-* **`subcommands`:** Defaults `false`, must be `true` if minicle is using git-style subcommands.
+* **`subcommand`:** Defaults `false`, must be `true` if minicle is using git-style subcommands.
 * **`usageText`:** Whatever text should follow `Usage:`. Not strictly required, but defaults to `"YOU FORGOT TO SPECIFY options.usageText!"`.
 * **`useColors`:** Whether to use ANSI colors. Defaults to `true`.
 * **`width`:** Maximum width of output, defaults to 76. Note that this is advisory: content does not wrap.
@@ -158,5 +158,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <a name="changelog"></a>
 ## Changelog
+
+1.0.0: One-point-oh-baby!
+
+* Fixed case with non-existent short option.
+* Suppressed output of options beginning with `@` (these are generated at runtime by minicle).
+* Changed `subcommands` to `subcommand` to keep with `minicle`'s convention. (`subcommands` still works.)
 
 0.0.1: Initial release.
