@@ -1,9 +1,7 @@
-# minicle-usage 1.0.0
+# minicle-usage 1.0.2
 
 **An add-on for [minicle](https://www.npmjs.com/package/minicle) that generates 
 headers and usage information, optionally with ANSI coloring.**
-
-**NEW in 1.0.0: Custom ANSI colors and box-drawing characters!**
 
 Minicle is a deliberately simple module in the spirit of Unix tool philosophy: 
 do one thing and do it well. For that reason, and because things like headers
@@ -185,6 +183,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <a name="changelog"></a>
 ## Changelog
+
+1.0.2: Shut up.
 
 1.0.1: Minor bugfixes
 
