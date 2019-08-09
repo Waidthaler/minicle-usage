@@ -220,7 +220,44 @@ function getWidths(map, max) {
 }
 
 
+
+//==============================================================================
+// Prints an error message to console if permitted by the current verbosity
+// level, and if the error is fatal, terminates the process.
+//==============================================================================
+
+function error(level, message, location = null) {
+
+    if(location === null)
+        location = cfg.appName.toUpperCase();
+
+    if(cfg.verbosity) {
+        switch(level) {
+            case "fatal":
+                console.log(ac.bgRed.yellowBright("[" + location + "]") + ac.redBright(" FATAL ERROR: ") + ac.yellowBright(message));
+                break;
+            case "warn":
+                if(cfg.verbosity >= 1)
+                    console.log(ac.bgYellow.whiteBright("[" + location + "]") + ac.yellowBright(" WARNING: ") + message);
+                break;
+            case "info":
+                if(cfg.verbosity >= 2)
+                    console.log(ac.bgGreen.whiteBright("[" + location + "]") + ac.greenBright(" INFO: ") + message);
+                break;
+            case "debug":
+                if(cfg.verbosity >= 3)
+                    console.log("[" + location + "] DEBUG: " + message);
+                break;
+        }
+    }
+
+    if(level == "fatal" && cfg.verbosity > 0)
+        process.exit(1);
+},
+
+
 module.exports = {
+    error:  error,
     header: header,
     usage:  usage
 };
